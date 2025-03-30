@@ -40,9 +40,18 @@ __declspec(naked) void HookedStamina()
 
 __declspec(naked) void HookedTextAttrs()
 {
-	static DWORD jmpBack	= 0x0074BE56;
+	static DWORD jmpBack	= 0x0074BD9E;
+	static DWORD sub_6A0000 = 0x006A0000;
 	__asm
 	{
+		mov ecx, [edi + 0xC4]
+		mov edx, [edi + 0xC8]
+		push 0x2F
+		push ecx
+		push edx
+		lea ecx, [esi + 0x198]
+		call sub_6A0000
+
 		jmp jmpBack
 	}
 }
@@ -55,7 +64,7 @@ extern "C" _declspec(dllexport) void InitDumper() // OK
 	freopen_s(&f, "CONOUT$", "w", stdout);
 #endif
 	SetOp((LPVOID)0x0074B2CC, (LPVOID)HookedStamina, ASM::JMP);
-	SetOp((LPVOID)0x0074BAD8, (LPVOID)HookedTextAttrs, ASM::JMP);
+	SetOp((LPVOID)0x0074BB70, (LPVOID)HookedTextAttrs, ASM::JMP);
 
 }
 
